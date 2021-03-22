@@ -53,16 +53,19 @@ function App() {
   };
 
   // Create Post
-  // const createPost = async (post) => {
-  //   try {
-  //     const response = await axios.post(`${BASE_URL}/posts`, {
-
-  //     });
-  //     // return response.data;
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // }
+  const createPost = async (post) => {
+    try {
+      console.log("Create Post");
+      console.log(post);
+      const response = await axios.post(`${BASE_URL}/posts`, {
+        ...post
+      });
+      setPosts([...posts, response.data]);
+      return response.data;
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   return (
     <Router>
@@ -76,6 +79,7 @@ function App() {
               <Home 
               loading={loading}
               posts={posts} setPosts={setPosts} 
+              createpost={createPost}
               />
             </Route>
             <Route path="/about" exact>

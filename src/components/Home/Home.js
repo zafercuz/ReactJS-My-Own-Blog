@@ -3,10 +3,9 @@ import HomeHeader from "./components/HomeHeader";
 import Posts from "./components/Posts";
 
 const Home = (props) => {
-  console.log(props);
   return (
     <>
-      <HomeHeader />
+      <HomeHeader createpost={props.createpost} />
       {props.loading ? (
         <Row className="mt-5">
           <Col className="row justify-content-center">

@@ -6,19 +6,9 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import FormModal from "./FormModal";
 
-const CreateButton = () => {
+const CreateButton = (props) => {
   const MySwal = withReactContent(Swal);
   const [modalShow, setModalShow] = useState(false);
-
-  // const onClickEvt = () => {
-  //   MySwal.fire({
-  //     position: 'top-end',
-  //     icon: 'success',
-  //     title: 'Your work has been saved',
-  //     showConfirmButton: true,
-  //     timer: 1500
-  //   });
-  // };
 
   return (
     <>
@@ -33,6 +23,7 @@ const CreateButton = () => {
       <FormModal
         show={modalShow}
         onHide={() => setModalShow(false)}
+        createpost={props.createpost}
       />
     </>
   );

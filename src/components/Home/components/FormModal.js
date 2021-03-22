@@ -6,6 +6,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const FormModal = (props) => {
+  console.log(props);
   const MySwal = withReactContent(Swal);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -19,6 +20,7 @@ const FormModal = (props) => {
         title: "Oops...",
         text: "Description must not be empty!",
       });
+      return
     }
     if (!title) {
       MySwal.fire({
@@ -26,6 +28,7 @@ const FormModal = (props) => {
         title: "Oops...",
         text: "Title must not be empty!",
       });
+      return
     }
     if (!title && !description) {
       MySwal.fire({
@@ -33,14 +36,26 @@ const FormModal = (props) => {
         title: "Oops...",
         text: "Fields must not be empty!",
       });
+      return
     }
-
-    // TODO: Add the Post function here
+    console.log("COntinue??");
+    // If no errors
+    props.createpost({title, description});
+    setTitle("");
+    setDescription("");
+    MySwal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Blog successfully created',
+      showConfirmButton: true,
+      timer: 1000
+    });
+    props.onHide();
   };
 
   return (
     <Modal
-      {...props}
+      show={props.show} onHide={props.onHide}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
