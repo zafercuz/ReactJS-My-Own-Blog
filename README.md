@@ -1,3 +1,7 @@
+# About the Project
+This project is my first own blog project using ReactJS. Code may be a little messy right now as I am still getting used to passing on variables unto other components. Am planning to learn how to integrate Redux as the code gets too spaghettiesh and hard to track where variables are going to child components.
+<br></br>
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
