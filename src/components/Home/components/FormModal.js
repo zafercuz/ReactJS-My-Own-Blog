@@ -4,22 +4,24 @@ import FormContent from "./FormContent";
 import { useState } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { Redirect, useHistory } from "react-router-dom";
 
 const FormModal = (props) => {
   const MySwal = withReactContent(Swal);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  let history = useHistory();
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!description) {
       MySwal.fire({
         icon: "error",
         title: "Oops...",
         text: "Description must not be empty!",
       });
-      return
+      return;
     }
     if (!title) {
       MySwal.fire({
@@ -27,7 +29,7 @@ const FormModal = (props) => {
         title: "Oops...",
         text: "Title must not be empty!",
       });
-      return
+      return;
     }
     if (!title && !description) {
       MySwal.fire({
@@ -35,28 +37,34 @@ const FormModal = (props) => {
         title: "Oops...",
         text: "Fields must not be empty!",
       });
-      return
+      return;
     }
 
     // If no errors, then proceed to Create Post
-    props.createpost({title, description}); // Pass in the variables
+    let data = await props.createpost({ title, description }); // Pass in the variables
+
+    console.log(data);
+
     // Set the title & description to initial blank
     setTitle("");
     setDescription("");
+    props.onHide(); // Hide the Modal by using the onHide() function
     // Show a success Sweet Alert
     MySwal.fire({
-      position: 'top-end',
-      icon: 'success',
-      title: 'Blog successfully created',
+      icon: "success",
+      title: "Blog successfully created",
       showConfirmButton: true,
       timer: 1000,
+    }).then(() => {
+      history.push(`/detail/${data.id}`);
     });
-    props.onHide(); // Hide the Modal by using the onHide() function
+    
   };
 
   return (
     <Modal
-      show={props.show} onHide={props.onHide}
+      show={props.show}
+      onHide={props.onHide}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered

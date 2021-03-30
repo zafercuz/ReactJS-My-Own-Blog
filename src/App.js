@@ -4,7 +4,7 @@ import Header from './components/Header';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
+  Route, Redirect
 } from "react-router-dom";
 import { Container } from 'react-bootstrap';
 import Footer from './components/Footer';
@@ -60,6 +60,7 @@ function App() {
         ...post
       });
       setPosts([...posts, response.data]);
+      <Redirect to="/about" />;
       return response.data;
     } catch (e) {
       console.log(e);
