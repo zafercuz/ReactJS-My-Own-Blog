@@ -6,7 +6,6 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
 const FormModal = (props) => {
-  console.log(props);
   const MySwal = withReactContent(Swal);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -38,19 +37,21 @@ const FormModal = (props) => {
       });
       return
     }
-    console.log("COntinue??");
-    // If no errors
-    props.createpost({title, description});
+
+    // If no errors, then proceed to Create Post
+    props.createpost({title, description}); // Pass in the variables
+    // Set the title & description to initial blank
     setTitle("");
     setDescription("");
+    // Show a success Sweet Alert
     MySwal.fire({
       position: 'top-end',
       icon: 'success',
       title: 'Blog successfully created',
       showConfirmButton: true,
-      timer: 1000
+      timer: 1000,
     });
-    props.onHide();
+    props.onHide(); // Hide the Modal by using the onHide() function
   };
 
   return (

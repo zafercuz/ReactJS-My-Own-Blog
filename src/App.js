@@ -5,16 +5,17 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link
 } from "react-router-dom";
 import { Container } from 'react-bootstrap';
 import Footer from './components/Footer';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
 // Components
 import Home from './components/Home/Home';
 import About from './components/About/About';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import PostDetail from './components/PostDetail/PostDetail';
+import PageNotFound from './components/PageNotFound';
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -55,8 +56,6 @@ function App() {
   // Create Post
   const createPost = async (post) => {
     try {
-      console.log("Create Post");
-      console.log(post);
       const response = await axios.post(`${BASE_URL}/posts`, {
         ...post
       });
@@ -65,6 +64,15 @@ function App() {
     } catch (e) {
       console.log(e);
     }
+  }
+
+  // Update Post
+  const updatePost = async (id) => {
+    // TODO: Add Update Post Code
+  };
+
+  const deletePost = async (id) => {
+    // TODO: Add Delete Post Code
   }
 
   return (
@@ -84,6 +92,12 @@ function App() {
             </Route>
             <Route path="/about" exact>
               <About />
+            </Route>
+            <Route path="/detail/:id">
+              <PostDetail fetchPost={fetchPost} />
+            </Route>
+            <Route>
+              <PageNotFound />
             </Route>
           </Switch>
         </Container>
