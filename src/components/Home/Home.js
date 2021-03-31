@@ -12,7 +12,7 @@ const Home = (props) => {
             return <Loading />
           else
             if (props.posts.length > 0)
-              return <Posts posts={props.posts} />
+              return <Posts posts={props.posts} deletePost={props.deletePost} />
             else
               return <h1 className="mt-5">No Posts to show...</h1>
         })()

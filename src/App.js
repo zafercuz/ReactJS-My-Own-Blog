@@ -1,33 +1,36 @@
 // Packages
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Header from './components/Header';
+import "bootstrap/dist/css/bootstrap.min.css";
+import Header from "./components/Header";
 import {
   BrowserRouter as Router,
   Switch,
-  Route, Redirect
+  Route,
+  useHistory,
+  Redirect,
 } from "react-router-dom";
-import { Container } from 'react-bootstrap';
-import Footer from './components/Footer';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { Container } from "react-bootstrap";
+import Footer from "./components/Footer";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 // Components
-import Home from './components/Home/Home';
-import About from './components/About/About';
-import PostDetail from './components/PostDetail/PostDetail';
-import PageNotFound from './components/PageNotFound';
+import Home from "./components/Home/Home";
+import About from "./components/About/About";
+import PostDetail from "./components/PostDetail/PostDetail";
+import PageNotFound from "./components/PageNotFound";
 
 function App() {
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
-  const BASE_URL = 'http://localhost:5000';
+  const BASE_URL = "http://localhost:5000";
 
   useEffect(() => {
     const getPosts = async () => {
       const postsFromServer = await fetchPosts();
       setPosts(postsFromServer);
       setLoading(false);
-    }
+    };
 
     setLoading(true);
     getPosts();
@@ -57,15 +60,14 @@ function App() {
   const createPost = async (post) => {
     try {
       const response = await axios.post(`${BASE_URL}/posts`, {
-        ...post
+        ...post,
       });
       setPosts([...posts, response.data]);
-      <Redirect to="/about" />;
       return response.data;
     } catch (e) {
       console.log(e);
     }
-  }
+  };
 
   // Update Post
   const updatePost = async (id) => {
@@ -73,8 +75,17 @@ function App() {
   };
 
   const deletePost = async (id) => {
-    // TODO: Add Delete Post Code
-  }
+    try {
+      await axios.delete(`${BASE_URL}/posts/${id}`);
+      console.log(posts);
+      setPosts(posts.filter((post) => post.id !== id));
+      let newPosts = posts.filter((post) => post.id !== id);
+      console.log(newPosts);
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
+  };
 
   return (
     <Router>
@@ -85,19 +96,23 @@ function App() {
             renders the first one that matches the current URL. */}
           <Switch>
             <Route path="/" exact>
-              <Home 
-              loading={loading}
-              posts={posts} setPosts={setPosts} 
-              createpost={createPost}
+              <Home
+                loading={loading}
+                posts={posts}
+                setPosts={setPosts}
+                createpost={createPost}
+                deletePost={deletePost}
               />
             </Route>
             <Route path="/about" exact>
               <About />
             </Route>
             <Route path="/detail/:id">
-              <PostDetail fetchPost={fetchPost} />
+              <PostDetail fetchPost={fetchPost} deletePost={deletePost}
+                setPosts={setPosts} posts={posts}
+              />
             </Route>
-            <Route>
+            <Route path="*">
               <PageNotFound />
             </Route>
           </Switch>

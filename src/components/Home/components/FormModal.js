@@ -43,8 +43,6 @@ const FormModal = (props) => {
     // If no errors, then proceed to Create Post
     let data = await props.createpost({ title, description }); // Pass in the variables
 
-    console.log(data);
-
     // Set the title & description to initial blank
     setTitle("");
     setDescription("");
